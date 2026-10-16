@@ -4,23 +4,23 @@ services:
     depends_on:
       - backend
     container_name: Frontend_container
-    command: npm run dev -- --host 0.0.0.0
     ports: ["3000:3000"]
+    command: npm run dev -- --host 0.0.0.0
     restart: always
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING = true
+      - CHOKIDAR_USEPOLLING=true
     networks: ["app-networks"]
 
   backend:
     build: ./backend
     depends_on:
       - mysql
-    container_name: Backend:Container
-    command: npx -y nodemon -L index.js
+    container_name: Backend_Container
     ports: ["3001:3001"]
+    command: npx -y nodemon -L index.js
     restart: always
     volumes:
       - ./backend:/app
