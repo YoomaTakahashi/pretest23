@@ -31,8 +31,8 @@
                                 <th class="border pa-1 bg-grey" style="width: 10%;" >รอบการประเมิน</th>
                                 <th class="border pa-1 bg-grey" style="width: 10%;" >ปีการประเมิน</th>
                             </tr>
-                            <tr v-for="r in round" :key="r">
-                                <td class="text-center pa-1 border" style="width: 10%;">{{ r+1 }}</td>
+                            <tr v-for="(r,index) in round" :key="r">
+                                <td class="text-center pa-1 border" style="width: 10%;">{{ index+1 }}</td>
                                 <td class="text-center pa-1 border" style="width: 10%;">{{ r.fname }}-{{ r.lname }}</td>
                                 <td class="text-center pa-1 border" style="width: 10%;">{{ r.round_sys }}</td>
                                 <td class="text-center pa-1 border" style="width: 10%;">{{ r.year_sys }}</td>

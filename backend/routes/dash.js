@@ -12,10 +12,14 @@ router.get('/eva',verifyToken,requireRole('ผู้รับการประ�
         res.json({
             box:[
                 {title:'แบบประเมินทั้งหมด',value:evaCount.total || 0},
-                {title:'แบบประเมินทั้งหมดที่ประเมินแล้ว',value:evaCount.total > },
+                {title:'แบบประเมินทั้งหมดที่ประเมินแล้ว',value:evaCount.total > 0 ? `${(y.total*100/evaCount.total).toFixed(2)}%` : '00.00%'},
+                {title:'แบบประเมินทั้งหมดที่ยังไม่ได้ประเมิน',value:evaCount.total > 0 ? `${(n.total*100/evaCount.total).toFixed(2)}%` : '00.00%'},
             ]
         })
     } catch (error) {
-        
+        console.error('error get topic',error)
+        res.status(500).json({message:'error get topic'})
     }
 })
+
+module.exports = router
