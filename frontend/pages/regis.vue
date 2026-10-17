@@ -95,7 +95,7 @@ function validateForm(){
     else if(f.password.trim().length < 6)error.value.password = "รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร"
     else if(f.password.trim() !== conP.value.trim())error.value.conP = "รหัสผ่านไม่ถูกต้อง"
 
-    if(f.role.trim())error.value.role = "กรุณาเลือกประเภทสมาชิก"
+    if(!f.role.trim())error.value.role = "กรุณาเลือกประเภทสมาชิก"
 
     return Object.keys(error.value).length === 0
 }

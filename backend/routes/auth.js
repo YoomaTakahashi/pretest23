@@ -7,7 +7,7 @@ const db = require('../db')
 const router = express.Router()
 const uploadDir = path.join(__dirname,'../uploads/pic_user')
 
-router.post('/save',async(req,res)=>{
+router.post('/regis',async(req,res)=>{
     try {
         
         const pic_user = req.files?.pic_user

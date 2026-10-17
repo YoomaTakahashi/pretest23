@@ -13,13 +13,23 @@ app.use(fileUp())
 app.use(express.json())
 app.use('/uploads',express.static(path.join(__dirname,'./uploads')))
 
-<<<<<<< HEAD
+
 const profile = require('./routes/profile')
 app.use('/api/profile',profile)
-=======
+
 const auth = require('./routes/auth')
 app.use('/api/auth',auth)
->>>>>>> c3fc4b1e753133da1a2a0d6f9f4aa0a998ec13b9
+
+//eva
+
+const selfeva = require('./routes/Eva/selfeva')
+app.use('/api/Eva/selfeva',selfeva)
+
+const score_member = require('./routes/Eva/score_member')
+app.use('/api/Eva/score_member',score_member)
+
+const score_commit = require('./routes/Eva/score_commit')
+app.use('/api/Eva/score_commit',score_commit)
 
 app.use((req,res)=> res.status(404).json({message:"Route not found"}))
 app.listen(3001,()=>{
