@@ -55,7 +55,7 @@
                                     <td class="border text-center">{{ items.name_indicate }}</td>
                                     <td class="border text-center">{{ items.detail_indicate || '-' }}</td>
                                     <td class="border text-center">{{ items.point_indicate }}</td>
-                                    <td class="border text-center">{{ items.check_indicate === 'y' : 'มี':'ไม่มี'}}</td>
+                                    <td class="border text-center">{{ items.check_indicate === 'y' ? 'มี':'ไม่มี'}}</td>
                                     <td class="border text-center">
                                         <center>
                                             <v-btn class="text-center text-white ma-2" size="small" color="warning" @click="edit(items)">แก้ไข</v-btn>
