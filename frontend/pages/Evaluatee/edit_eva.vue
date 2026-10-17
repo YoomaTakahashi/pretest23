@@ -29,7 +29,7 @@
                                     <v-text-field variant="solo-filled" label="ยืนยันรหัสผ่าน" v-model="conP" :error-messages="error.conP" :prepend-inner-icon="show2 ? 'mdi-eye':'mdi-eye-off'" :type="showPw2 ? 'text':'password'" @click:prepend-inner="show2 = !show2 , showPw2 = !showPw2"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-alert prepend-inner-icon="mdi-account" variant="tonal">{{ form.role }}</v-alert>
+                                    <v-alert icon="mdi-account" variant="tonal">{{ form.role }}</v-alert>
                                 </v-col>
                                 
                             </v-row>
@@ -103,7 +103,7 @@ const saveMember = async()=>{
     if(!validateForm())return
     try {
         
-        await axios.post(`${eva}/edit_eva/`,form.value,{headers:{Authorization:`Bearer ${token}`}})
+        await axios.put(`${eva}/edit_eva/`,form.value,{headers:{Authorization:`Bearer ${token}`}})
         alert('แก้ไขสำเร็จ')
         window.location.reload()
     } catch (error) {

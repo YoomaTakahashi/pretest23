@@ -170,10 +170,30 @@ const result = computed(()=>{
     const s = search.value.toLowerCase()
     return dataResult.value.filter((items:any)=>{
         return(
-            items.username
+            items.username.toLowerCase().includes(s)
         )
     })
 })
+
+const del = async(id_member:number)=>{
+    if(!confirm('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่'))return
+    try {
+        await axios.delete(`${staff}/member/delete/${id_member}`,{headers:{Authorization:`Bearer ${token}`}})
+        await fetch()
+        await reset()
+    } catch (error) {
+        console.error("Error delete",error);
+        
+    }
+}
+
+const edit = (items:any)=>{
+
+    form.value = {...items}
+
+}
+
+onMounted(fetch)
 
 </script>
 
