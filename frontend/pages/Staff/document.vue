@@ -14,7 +14,7 @@
                                     <v-text-field label="ชื่อเอกสาร" v-model="name_doc" prepend-inner-icon="mdi-file-edit"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-file-input label="เอกสาร" v-model="file" prepend-inner-icon="mdi-file"></v-file-input>
+                                    <v-file-input label="เอกสาร" v-model="file" prepend-inner-icon="mdi-file" accept=".pdf" hint="รองรับเฉพาะไฟล์ PDF ขนาดไม่เกิน 10MB" persistent-hint></v-file-input>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -41,7 +41,7 @@
                                 <tr v-for="(items,index) in result" :key="items.id_doc">
                                     <td class="border text-center">{{ index+1 }}</td>
                                     <td class="border text-center">{{ items.name_doc }}</td>
-                                    <td class="border text-center">{{items.day_doc}}</td>
+                                    <td class="border text-center">{{ formatDate(items.day_doc) }}</td>
                                     <td class="border text-center"><v-btn class="text-center" color="info" prepend-icon="mdi-eye" @click="view(items.file)">เปิดดู</v-btn></td>
                                     <td class="border text-center">
                                         <center>
@@ -60,44 +60,33 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { staff } from '~/API/base'
+import { api, staff } from '~/API/base'
 
 const dataResult = ref([])
-const eva = ref([])
-const round = ref([])
+const file = ref<File | null>(null)
 const error = ref<Record<string,string>>({})
 const search = ref('')
+const name_doc = ref('')
 
 const reset = ()=>{
-    form.value = {
-        id_eva:null,
-        id_member:'',
-        id_sys:'',
-        day_eva:''
-    }
-}
-const emailRegex = /^[^\s]+@[^\s]+\.[^\s]{2,}$/i
-function validateForm(){
-    const f = form.value
-    error.value = {}
-
-    if(!f.id_member)error.value.id_member = "กรุณาเลือกผู้รับการประเมินผล"
-    if(!f.id_sys)error.value.id_sys = "กรุณาเลือกรอบการประเมินผล"
-    if(!f.day_eva)error.value.day_eva = "กรุณาเลือกวันที่ออกแบบประเมิน"
-
-    return Object.keys(error.value).length === 0
+    name_doc.value = ''
+    file.value = null
 }
 const token = import.meta.client ? localStorage.getItem('token'):null
 
 const saveMember = async()=>{
 
-    if(!validateForm())return
-    const f = form.value
+    if(!name_doc.value && !file.value)return alert('กรอกข้อมูลให้ครบถ้วน')
+    const maxSize = 10*1024*1024
+    if(file.value?.size > maxSize){
+        alert("ไฟล์มีขนาดเกิน 10MB")
+    }
+    const formdata = new FormData
+    formdata.append('name_doc',name_doc.value)
+    formdata.append('file',file.value!)
     try {
         
-        f.id_eva
-        ? await axios.put(`${staff}/eva/update/${f.id_eva}`,f,{headers:{Authorization:`Bearer ${token}`}})
-        : await axios.post(`${staff}/eva/save`,f,{headers:{Authorization:`Bearer ${token}`}})
+        await axios.post(`${staff}/doc/save`,formdata,{headers:{Authorization:`Bearer ${token}`}})
         alert('ทำรายการสำเร็จ')
         await fetch()
         await reset()
@@ -109,15 +98,9 @@ const saveMember = async()=>{
 }
 
 const fetch = async()=>{
-    try {
-        
-        const res = await axios.get(`${staff}/eva/show`,{headers:{Authorization:`Bearer ${token}`}})
+    try {   
+        const res = await axios.get(`${staff}/doc/show`,{headers:{Authorization:`Bearer ${token}`}})
         dataResult.value = res.data
-        const res2 = await axios.get(`${staff}/member/showE`,{headers:{Authorization:`Bearer ${token}`}})
-        eva.value = res2.data
-        const res3 = await axios.get(`${staff}/system/show`,{headers:{Authorization:`Bearer ${token}`}})
-        round.value = res3.data
-
     } catch (error) {
         console.error("Error get",error);
         
@@ -129,8 +112,7 @@ const result = computed(()=>{
     const s = search.value.toLowerCase()
     return dataResult.value.filter((items:any)=>{
         return(
-            items.fname.toLowerCase().includes(s) ||
-            items.lname.toLowerCase().includes(s)
+            items.name_doc.toLowerCase().includes(s)
         )
     })
 })
@@ -148,7 +130,7 @@ const formatDate = (dateStr:string)=>{
 const del = async(id_eva:number)=>{
     if(!confirm('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่'))return
     try {
-        await axios.delete(`${staff}/eva/delete/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
+        await axios.delete(`${staff}/doc/delete/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
         await fetch()
         await reset()
     } catch (error) {
@@ -157,11 +139,16 @@ const del = async(id_eva:number)=>{
     }
 }
 
-const edit = (items:any)=>{
-
-    form.value = {...items}
-
+const view = (file:string)=>{
+    const url = new URL(`/uploads/document/${file}`,api).href
+    window.open(url,'_blank')
 }
+
+// const edit = (items:any)=>{
+
+//     form.value = {...items}
+
+// }
 
 const go = (id_eva:number)=>{
     navigateTo({path:`/Staff/commit-eva-${id_eva}`})

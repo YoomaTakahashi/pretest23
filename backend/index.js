@@ -23,6 +23,9 @@ app.use('/api/auth',auth)
 const dash = require('./routes/dash')
 app.use('/api/dash',dash)
 
+const docnoe = require('./routes/docnoe')
+app.use('/api/docnoe',docnoe)
+
 //eva
 
 const selfeva = require('./routes/Eva/selfeva')

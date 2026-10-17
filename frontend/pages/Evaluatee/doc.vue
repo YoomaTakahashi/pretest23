@@ -4,7 +4,7 @@
             <v-col cols="12" md="12">
                 <v-card>
                     <v-card-title>
-                        <h1 class="text-center">คู่มือการประเมิน</h1>
+                        <h1 class="text-center">เอกสารและคู่มือการประเมิน</h1>
                     </v-card-title>
                     <v-card-text>
                         <v-table>
@@ -20,8 +20,9 @@
                                 <tr v-for="(items,index) in result" :key="items.id_doc">
                                     <td class="border text-center">{{ index+1 }}</td>
                                     <td class="border text-center">{{ items.name_doc }}</td>
-                                    <td class="border text-center">{{items.day_doc}}</td>
+                                    <td class="border text-center">{{ formatDate(items.day_doc) }}</td>
                                     <td class="border text-center"><v-btn class="text-center" color="info" prepend-icon="mdi-eye" @click="view(items.file)">เปิดดู</v-btn></td>
+                                    
                                 </tr>
                             </tbody>
                         </v-table>
@@ -34,15 +35,13 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { staff } from '~/API/base'
+import { api, staff } from '~/API/base'
 
 const dataResult = ref([])
-const eva = ref([])
-const round = ref([])
+const file = ref<File | null>(null)
 const error = ref<Record<string,string>>({})
 const search = ref('')
-
-
+const name_doc = ref('')
 
 
 const token = import.meta.client ? localStorage.getItem('token'):null
@@ -50,10 +49,9 @@ const token = import.meta.client ? localStorage.getItem('token'):null
 
 
 const fetch = async()=>{
-    try {
-        
-        
-
+    try {   
+        const res = await axios.get(`${api}/docnoe/`,{headers:{Authorization:`Bearer ${token}`}})
+        result.value = res.data
     } catch (error) {
         console.error("Error get",error);
         
@@ -72,13 +70,14 @@ const formatDate = (dateStr:string)=>{
     return `${day}/${month}/${year}`
 }
 
-
-
-
-
-const go = (id_eva:number)=>{
-    
+const view = (file:string)=>{
+    const url = new URL(`/uploads/document/${file}`,api).href
+    window.open(url,'_blank')
 }
+
+
+
+
 
 onMounted(fetch)
 
