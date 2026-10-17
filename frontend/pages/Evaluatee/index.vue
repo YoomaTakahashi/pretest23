@@ -32,10 +32,10 @@
                                 <th class="border pa-1 bg-grey" style="width: 10%;" >ปีการประเมิน</th>
                             </tr>
                             <tr v-for="r in round" :key="r">
-                                <td class="text-center pa-1 border" style="width: 10%;"></td>
-                                <td class="text-center pa-1 border" style="width: 10%;"></td>
-                                <td class="text-center pa-1 border" style="width: 10%;"></td>
-                                <td class="text-center pa-1 border" style="width: 10%;"></td>
+                                <td class="text-center pa-1 border" style="width: 10%;">{{ r+1 }}</td>
+                                <td class="text-center pa-1 border" style="width: 10%;">{{ r.fname }}-{{ r.lname }}</td>
+                                <td class="text-center pa-1 border" style="width: 10%;">{{ r.round_sys }}</td>
+                                <td class="text-center pa-1 border" style="width: 10%;">{{ r.year_sys }}</td>
                             </tr>
                         </v-table>
                     </v-col>
@@ -48,8 +48,33 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import { eva } from '~/API/base';
+import { eva,api } from '~/API/base';
 
+const box = ref([])
+const round = ref<any>({})
+
+const fetch = async()=>{
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${api}/dash/eva`,{headers:{Authorization:`Bearer ${token}`}})
+        box.value =res.data.box
+    } catch (error) {
+        console.error('error get ',error)
+    }
+}
+const fetchR = async()=>{
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${eva}/table/`,{headers:{Authorization:`Bearer ${token}`}})
+        round.value =res.data
+    } catch (error) {
+        console.error('error get ',error)
+    }
+}
+
+onMounted(async()=>{
+    await Promise.all([fetch(),fetchR()])
+})
 </script>
 
 <style scoped>
