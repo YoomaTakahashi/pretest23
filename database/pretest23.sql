@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Oct 17, 2026 at 03:05 AM
+-- Generation Time: Oct 17, 2026 at 06:50 AM
 -- Server version: 26.7.0
 -- PHP Version: 8.3.35
 
@@ -66,6 +66,13 @@ CREATE TABLE `tb_eva` (
   `total_commit` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `tb_eva`
+--
+
+INSERT INTO `tb_eva` (`id_eva`, `id_member`, `id_sys`, `status_eva`, `day_eva`, `total_eva`, `total_commit`) VALUES
+(1, 1, 1, 2, '2026-10-04', 68.00, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -78,10 +85,26 @@ CREATE TABLE `tb_evadetail` (
   `id_indicate` int NOT NULL,
   `status_eva` int NOT NULL,
   `detail_eva` text,
-  `score_member` int NOT NULL,
-  `score_commit` int NOT NULL,
-  `file_eva` varchar(100) NOT NULL
+  `score_member` int DEFAULT NULL,
+  `score_commit` int DEFAULT NULL,
+  `file_eva` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_evadetail`
+--
+
+INSERT INTO `tb_evadetail` (`id_detail`, `id_eva`, `id_indicate`, `status_eva`, `detail_eva`, `score_member`, `score_commit`, `file_eva`) VALUES
+(1, 1, 1, 1, 'asdfasdf', 2, NULL, '1792215463455g6fj6mdxo2u.jpg'),
+(2, 1, 2, 1, 'adsfads', 1, NULL, '17922154634555qj4ofp2mj4.jpg'),
+(3, 1, 1, 1, 'testa', 3, NULL, '1792215548437byg2js5adh.jpg'),
+(4, 1, 2, 1, 'testb', 4, NULL, '1792215548442fhqht1b37ja.jpg'),
+(5, 1, 1, 1, 'testa', 1, NULL, '1792215601208p7p3j9ul6c.jpg'),
+(6, 1, 2, 1, 'tesab', 3, NULL, '1792215601213aaerdlg739t.jpg'),
+(7, 1, 1, 1, 'test', 3, NULL, '1792215635352wq73slkjb8i.jpg'),
+(8, 1, 2, 1, 'adfasd', 1, NULL, '1792215635354c0pw6zst7yo.jpg'),
+(9, 1, 1, 1, 'testa', 3, NULL, '1792215668409msyjh7dwdfp.jpg'),
+(10, 1, 2, 1, 'testa', 2, NULL, '17922156684102tr0dye3ie2.jpg');
 
 -- --------------------------------------------------------
 
@@ -97,6 +120,14 @@ CREATE TABLE `tb_indicate` (
   `detail_indicate` text,
   `check_indicate` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_indicate`
+--
+
+INSERT INTO `tb_indicate` (`id_indicate`, `id_topic`, `name_indicate`, `point_indicate`, `detail_indicate`, `check_indicate`) VALUES
+(1, 1, 'กระเพรา', 2, 'รสชาติของกระเพรา', 'y'),
+(2, 1, 'ขาหมู', 4, 'ระดับความอร่อย', 'n');
 
 -- --------------------------------------------------------
 
@@ -115,6 +146,13 @@ CREATE TABLE `tb_member` (
   `pic_user` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `tb_member`
+--
+
+INSERT INTO `tb_member` (`id_member`, `fname`, `lname`, `username`, `password`, `email`, `role`, `pic_user`) VALUES
+(1, 'supimon', 'supimon', 'supimon', '$2b$10$rO66Drm.m8M3jBHLsFGcM.bRidE6IOyD/q8VuGk3Vpu0qW8a4Ewq6', 'supimon@gmail.com', 'ผู้รับการประเมินผล', '1792207143687.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +168,13 @@ CREATE TABLE `tb_system` (
   `status_sys` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `tb_system`
+--
+
+INSERT INTO `tb_system` (`id_sys`, `day_open`, `day_out`, `round_sys`, `year_sys`, `status_sys`) VALUES
+(1, '2026-10-01', '2035-10-11', 1, 2569, 'y');
+
 -- --------------------------------------------------------
 
 --
@@ -140,6 +185,13 @@ CREATE TABLE `tb_topic` (
   `id_topic` int NOT NULL,
   `name_topic` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_topic`
+--
+
+INSERT INTO `tb_topic` (`id_topic`, `name_topic`) VALUES
+(1, 'อาหาร');
 
 --
 -- Indexes for dumped tables
@@ -213,37 +265,37 @@ ALTER TABLE `tb_doc`
 -- AUTO_INCREMENT for table `tb_eva`
 --
 ALTER TABLE `tb_eva`
-  MODIFY `id_eva` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_eva` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_evadetail`
 --
 ALTER TABLE `tb_evadetail`
-  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_indicate`
 --
 ALTER TABLE `tb_indicate`
-  MODIFY `id_indicate` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_indicate` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_member`
 --
 ALTER TABLE `tb_member`
-  MODIFY `id_member` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_member` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_system`
 --
 ALTER TABLE `tb_system`
-  MODIFY `id_sys` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sys` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_topic`
 --
 ALTER TABLE `tb_topic`
-  MODIFY `id_topic` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_topic` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
