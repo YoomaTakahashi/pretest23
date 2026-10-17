@@ -62,12 +62,21 @@ const login = async()=>{
 
     try {
         
-        const res = await auth
+        const res = await auth.login({
+            username:username.value,
+            password:password.value,
+            role:role.value
+        })
+        console.log("Login",res.data)
+        localStorage.setItem('token',res.data.token)
         alert('ทำรายการสำเร็จ')
-        navigateTo('/',{replace:true})
-
-    } catch (error) {
-        console.error("error regis",error);
+        const useRole = res.data.role
+        if(useRole === 'ฝ่ายบุคลากร')useRouter().push('/Staff')
+        if(useRole === 'ผู้รับการประเมินผล')useRouter().push('/Evaluatee')
+        if(useRole === 'กรรมการประเมิน')useRouter().push('/Committee')
+    } catch (err:any) {
+        console.error("error login",err);
+        error.value = err.response?.data?.message || 'เข้าสู่ระบบไม่สำเร็จ'
         
     }
 
