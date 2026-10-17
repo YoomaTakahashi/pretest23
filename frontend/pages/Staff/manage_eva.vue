@@ -73,13 +73,14 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { api } from '~/API/base'
+import { staff } from '~/API/base'
 
 const dataResult = ref([])
 const error = ref<Record<string,string>>({})
 const pic_user = ref<File | null>(null)
 const show = ref(false)
 const showPw = ref(false)
+const search = ref('')
 const typeR = ['ผู้รับการประเมินผล']
 const form = ref({
 
@@ -118,28 +119,61 @@ function validateForm(){
     if(!f.password.trim())error.value.password = "กรุณากรอกรหัสผ่าน"
     else if(f.password.trim().length < 6)error.value.password = "รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร"
 
-    if(f.role.trim())error.value.role = "กรุณาเลือกประเภทสมาชิก"
+    if(!f.role.trim())error.value.role = "กรุณาเลือกประเภทสมาชิก"
 
     return Object.keys(error.value).length === 0
 }
+const token = import.meta.client ? localStorage.getItem('token'):null
 
 const saveMember = async()=>{
 
     if(!validateForm())return
     const f = form.value
-    const payload
+    const payload = {
+        fname:f.fname,
+        lname:f.lname,
+        email:f.email,
+        username:f.username,
+        password:f.password,
+        role:f.role,
+        ...(f.password ? {password:f.password}:null)
+    }
     try {
         
-        await axios.post(`${api}/auth/regis`,formdata)
+        f.id_member
+        ? await axios.put(`${staff}/member/update/${f.id_member}`,payload,{headers:{Authorization:`Bearer ${token}`}})
+        : await axios.post(`${staff}/member/save`,{...payload,password:f.password},{headers:{Authorization:`Bearer ${token}`}})
         alert('ทำรายการสำเร็จ')
-        navigateTo('/',{replace:true})
-
+        await fetch()
+        await reset()
     } catch (error) {
-        console.error("error regis",error);
+        console.error("error save",error);
         
     }
 
 }
+
+const fetch = async()=>{
+    try {
+        
+        const res = await axios.get(`${staff}/member/showE`,{headers:{Authorization:`Bearer ${token}`}})
+        dataResult.value = res.data
+
+    } catch (error) {
+        console.error("Error get",error);
+        
+    }
+}
+
+const result = computed(()=>{
+    if(!search.value)return dataResult.value
+    const s = search.value.toLowerCase()
+    return dataResult.value.filter((items:any)=>{
+        return(
+            items.username
+        )
+    })
+})
 
 </script>
 
