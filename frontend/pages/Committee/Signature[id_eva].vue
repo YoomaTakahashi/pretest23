@@ -4,13 +4,13 @@
             <v-col cols="12" md="12">
                 <v-card>
                     <v-card-title>
-                        <h1 class="text-center">เอกสารและคู่มือการประเมิน</h1>
+                        <h1 class="text-center">ยืนยันผลการประเมิน</h1>
                     </v-card-title>
                     <v-card-text>
                         <br>
-                        <v-form v-if="!result.signature" @submit.prevent="saveMember">
+                        <v-form v-if="!dataResult.signature" @submit.prevent="saveMember">
                             <v-row>
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="12">
                                     <v-file-input label="เอกสาร" v-model="file" prepend-inner-icon="mdi-file" accept=".pdf" hint="รองรับเฉพาะไฟล์ PDF ขนาดไม่เกิน 10MB" persistent-hint></v-file-input>
                                 </v-col>
                             </v-row>
@@ -23,8 +23,7 @@
                                 </v-col>
                             </v-row>
                         </v-form>
-                        <v-text-field class="mt-3" v-model="search" prepend-inner-icon="mdi-magnify"></v-text-field>
-                        <v-table >
+                        <v-table v-else >
                             <thead>
                                 <tr>
                                     <th class="border text-center">ลำดับ</th>
@@ -33,13 +32,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(items,index) in result" :key="items.id_doc">
-                                    <td class="border text-center">{{ index+1 }}</td>
-                                    <td class="border text-center">{{ items.signature }}</td>
+                                <tr>
+                                    <td class="border text-center">{{ 1 }}</td>
+                                    <td class="border text-center">{{ dataResult.signature }}</td>
                                     <td class="border text-center">
                                         <center>
-                                            <v-btn class="text-center" color="info" prepend-icon="mdi-eye" @click="view(items.signature)">เปิดดู</v-btn>
-                                            <v-btn class="text-center text-white ma-2" size="small" color="error" @click="del(items.id_eva)">ลบ</v-btn>
+                                            <v-btn class="text-center" color="info" prepend-icon="mdi-eye" @click="view(dataResult.signature)">เปิดดู</v-btn>
+                                            <v-btn class="text-center text-white ma-2" size="small" color="error" @click="del">ลบ</v-btn>
                                         </center>
                                     </td>
                                 </tr>
@@ -56,7 +55,7 @@
 import axios from 'axios'
 import { api, staff,commit } from '~/API/base'
 
-const dataResult = ref([])
+const dataResult = ref<any>({})
 const file = ref<File | null>(null)
 const error = ref<Record<string,string>>({})
 const search = ref('')
@@ -81,10 +80,11 @@ const saveMember = async()=>{
     formdata.append('file',file.value!)
     try {
         
-        await axios.post(`${commit}/signature/${id_eva}`,formdata,{headers:{Authorization:`Bearer ${token}`}})
+        const res = await axios.post(`${commit}/signature/${id_eva}`,formdata,{headers:{Authorization:`Bearer ${token}`}})
         alert('ทำรายการสำเร็จ')
         await fetch()
         await reset()
+        console.log(res)
     } catch (error) {
         console.error("error save",error);
         
@@ -122,10 +122,10 @@ const formatDate = (dateStr:string)=>{
     return `${day}/${month}/${year}`
 }
 
-const del = async(id_eva:number)=>{
+const del = async()=>{
     if(!confirm('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่'))return
     try {
-        await axios.delete(`${staff}/doc/delete/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
+        await axios.delete(`${commit}/signature/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
         await fetch()
         await reset()
     } catch (error) {
@@ -135,7 +135,7 @@ const del = async(id_eva:number)=>{
 }
 
 const view = (file:string)=>{
-    const url = new URL(`/uploads/document/${file}`,api).href
+    const url = new URL(`/uploads/signature/${file}`,api).href
     window.open(url,'_blank')
 }
 

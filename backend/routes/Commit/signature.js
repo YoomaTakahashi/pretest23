@@ -4,13 +4,13 @@ const fs = require('fs')
 const db = require('../../db')
 const { verifyToken, requireRole } = require('../../middleware/authmiddleware')
 const router = express.Router()
-const uploadDir = path.join(__dirname,'../../uploads/document')
+const uploadDir = path.join(__dirname,'../../uploads/signature')
 
 router.get('/:id_eva',verifyToken,requireRole('กรรมการประเมิน'),async(req,res)=>{
     try {
         const id_member = req.user.id_member
         const id_eva = req.params.id_eva
-        const [rows] = await db.query(`select * from tb_commit where id_eva=? and id_member=?`,[id_eva,id_member])
+        const [rows] = await db.query(`select signature from tb_commit where id_eva=? and id_member=?`,[id_eva,id_member])
         res.json(rows[0])
     } catch (error) {
         console.error("Error get",error);
@@ -37,21 +37,25 @@ router.post('/:id_eva',verifyToken,requireRole('กรรมการประ�
     }
 })
 
-router.delete('/delete/:id_doc',verifyToken,requireRole('ฝ่ายบุคลากร'),async(req,res)=>{
+router.delete('/:id_eva',verifyToken,requireRole('กรรมการประเมิน'),async(req,res)=>{
     try {
         const id_member = req.user.id_member
         const id_eva = req.params.id_eva
-        const [[d]] = await db.query(`select signature from tb_commit where id_eva=? and id_member=?`,[id_eva,id_member])
-        res.status(201).json({message:'Uploads Success'})
-        const fp = path.join(uploadDir,d.signature)
-        if(fs.existsSync(fp)){
-            fs.unlinkSync(fp)
+        const [[row]] = await db.query(`select signature from tb_commit where id_eva=? and id_member=?`,[id_eva,id_member])
+        if (!row) {
+            return res.status(404).json({message:'Committee assignment not found'})
         }
-        await db.query(`update tb_commit set set signature=? where id_eva=? and id_member=?`,[null,id_eva,id_member])
-        res.json({message:'Del Success'})
+        if (row.signature) {
+            const filePath = path.join(uploadDir,row.signature)
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath)
+            }
+        }
+        await db.query(`update tb_commit set signature=? where id_eva=? and id_member=?`,[null,id_eva,id_member])
+        res.json({message:'Signature deleted'})
     } catch (error) {
-        console.error("Error delete",error);
-        res.status(500).json({message:"Error delete"})
+        console.error("Error delete signature",error)
+        res.status(500).json({message:"Error delete signature"})
         
     }
 })

@@ -30,7 +30,7 @@
                     </div>
                 </v-form>
                 <v-alert type="success" variant="tonal" color="green" v-else-if="user.status_commit === 'n'">ยังไม่ได้ประเมิน</v-alert>
-                <v-alert type="error" variant="tonal" color="error" v-else>ประเมินสำเร็จ</v-alert>
+                <v-alert type="error" variant="tonal" color="error" v-else>หน้านี้ไม่พร้อม</v-alert>
             </v-col>
         </v-row>
     </v-container>
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import { eva,api } from '~/API/base';
+import { eva,api,commit } from '~/API/base';
 
 const user = ref<any>({})
 const topics = ref<any>([])
@@ -53,7 +53,7 @@ const view = (file:string)=>{
 const fetch = async()=>{
     const token = localStorage.getItem('token')
     try {
-        const res =await axios.get(`${eva}/selfeva/user`,{headers:{Authorization:`Bearer ${token}`}})
+        const res =await axios.get(`${commit}/score_commit/user/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
         user.value = res.data
     } catch (error) {
         console.error('error get user',error)
@@ -62,7 +62,7 @@ const fetch = async()=>{
 const fetchTopic = async()=>{
     const token = localStorage.getItem('token')
     try {
-        const res =await axios.get(`${eva}/score_member/topic`,{headers:{Authorization:`Bearer ${token}`}})
+        const res =await axios.get(`${commit}/score_commit/topic/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
         topics.value = res.data
         res.data.forEach((s:any)=> s.indicates.forEach((i:any)=> totalScore.value += (i.score_commit*i.point_indicate)))
     } catch (error) {
