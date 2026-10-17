@@ -15,8 +15,15 @@ app.use('/uploads',express.static(path.join(__dirname,'./uploads')))
 
 const profile = require('./routes/profile')
 app.use('/api/profile',profile)
+
 const auth = require('./routes/auth')
 app.use('/api/auth',auth)
+
+const dash = require('./routes/dash')
+app.use('/api/dash',dash)
+
+const docnoe = require('./routes/docnoe')
+app.use('/api/docnoe',docnoe)
 
 //staff
 const member = require('./routes/Staff/member')
@@ -49,11 +56,11 @@ app.use('/api/Staff/score_member',score_member3)
 const score_commit3 = require('./routes/Staff/score_commit')
 app.use('/api/Staff/score_commit',score_commit3)
 
-
 const status = require('./routes/Staff/status')
 app.use('/api/Staff/status',status)
 
 //eva
+
 
 const selfeva = require('./routes/Eva/selfeva')
 app.use('/api/Eva/selfeva',selfeva)
@@ -63,6 +70,12 @@ app.use('/api/Eva/score_member',score_member)
 
 const score_commit = require('./routes/Eva/score_commit')
 app.use('/api/Eva/score_commit',score_commit)
+
+const edit_eva = require('./routes/Eva/edit_eva')
+app.use('/api/Eva/edit_eva',edit_eva)
+
+const table = require('./routes/Eva/table')
+app.use('/api/Eva/table',table)
 
 app.use((req,res)=> res.status(404).json({message:"Route not found"}))
 app.listen(3001,()=>{

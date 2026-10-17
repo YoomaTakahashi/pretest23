@@ -26,7 +26,7 @@
                                     <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.detail_indicate }}</td>
                                     <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.point_indicate }}</td>
                                     <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.point_indicate*4 }}</td>
-                                    <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.detail_eva }}</td>
+                                    <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.detail_eva || '-' }}</td>
                                     <td class="text-center pa-1 border" style="width: 10%;"><v-btn color="warning" size="small" prepend-icon="mdi-eye" @click="view(indicate.file_eva)" >เปิดดู</v-btn></td>
                                     <td class="text-center pa-1 border" style="width: 10%;">{{ indicate.point_indicate*indicate.score_member }}</td>
                                 </tr>
@@ -34,11 +34,11 @@
                         </v-col>
                     </v-row>
                     <div class="mt-4 text-end">
-                        <v-card  color="green">คะแนนรวม : {{ user.total_eva }} คะแนน</v-card>
+                        <v-card class="pa-3"  color="green">คะแนนรวม : {{ user.total_eva }} คะแนน</v-card>
                     </div>
                 </v-form>
-                <v-alert type="success" variant="tonal" color="green" v-else-if="user.status_eva === 1">ยังไม่ได้ประเมินตนะเอง</v-alert>
-                <v-alert type="error" variant="tonal" color="error" v-else>ประเมินสำเร็จ</v-alert>
+                <v-alert type="warning" variant="tonal" v-else-if="user.status_eva === 1">ยังไม่ได้ประเมินตนเอง</v-alert>
+                <v-alert type="error" variant="tonal" v-else>ประเมินสำเร็จ</v-alert>
             </v-col>
         </v-row>
     </v-container>

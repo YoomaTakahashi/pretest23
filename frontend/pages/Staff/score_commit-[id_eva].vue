@@ -36,7 +36,7 @@
                         </v-col>
                     </v-row>
                     <div class="mt-4 text-end">
-                        <v-card  color="green">คะแนนรวมสุทธิ : {{ ((user.total_commit)/3).toFixed(2) }} คะแนน</v-card>
+                        <v-card class="pa-3"  color="green">คะแนนรวมสุทธิ : {{ ((user.total_commit)/3).toFixed(2) }} คะแนน</v-card>
                     </div>
                     <div class="mt-3">
                         <v-card class="pa-3 py-3" :elevation="5" rounded>
@@ -91,8 +91,8 @@ const fetchTopic = async()=>{
 const fetchScore = async()=>{
     const token = localStorage.getItem('token')
     try {
-        const res =await axios.get(`${staff}/score_commit/scores/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
-        scores.value = res.data
+        const res =await axios.get(`${staff}/score_commit/score/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
+        scores.value = res.data.scores
     } catch (error) {
         console.error('error get topic',error)
     }

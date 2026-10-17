@@ -26,7 +26,7 @@
                                     <td class="border text-center">{{ items.fname }} {{ items.lname }}</td>
                                     <td class="border text-center">รอบการประเมินที่:{{items.round_sys}} ปี:{{ items.year_sys }}</td>
                                     <td class="border text-center">{{ formatDate(items.day_eva) }}</td>
-                                    <td class="border text-center"><v-btn class="text-center text-white" :color="bg(items.status_eva)" size="small">{{ items.status_eva === 1 'รอการประเมินตนเอง': items.status_eva === 2 ? 'รอกรรมการประเมิน':'ประเมินสำเร็จ' }}</v-btn></td>
+                                    <td class="border text-center"><v-btn class="text-center text-white" :color="bg(items.status_eva)" size="small">{{ items.status_eva === 1 ? 'รอการประเมินตนเอง': items.status_eva === 2 ? 'รอกรรมการประเมิน':'ประเมินสำเร็จ' }}</v-btn></td>
                                     <!-- <td class="border text-center"><v-btn class="text-center" color="info" @click="go(items.id_eva)">รายละเอียด</v-btn></td> -->
                                 </tr>
                             </tbody>

@@ -51,7 +51,7 @@ router.delete('/delete/:id_sys',verifyToken,requireRole('ฝ่ายบุค�
 router.get('/show',verifyToken,requireRole('ฝ่ายบุคลากร'),async(req,res)=>{
     try {
         
-        const [rows] = await db.query(`select * from tb_system where status_sys='y' order by id_system desc`)
+        const [rows] = await db.query(`select * from tb_system where status_sys='y' order by id_sys desc`)
         res.json(rows)
         
     } catch (error) {
