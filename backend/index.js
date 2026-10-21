@@ -84,6 +84,17 @@ app.use('/api/Commit/save_score',save_score)
 
 const score_member2 = require('./routes/Commit/score_member')
 app.use('/api/Commit/score_member',score_member2)
+const table = require('./routes/Eva/table')
+app.use('/api/Eva/table',table)
+
+const signature = require('./routes/Commit/signature')
+app.use('/api/Commit/signature',signature)
+
+const score_commit2 = require('./routes/Commit/score_commit')
+app.use('/api/Commit/score_commit',score_commit2)
+
+const check = require('./routes/Commit/check')
+app.use('/api/Commit/check',check)
 
 app.use((req,res)=> res.status(404).json({message:"Route not found"}))
 app.listen(3001,()=>{

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Oct 17, 2026 at 06:50 AM
+-- Generation Time: Oct 17, 2026 at 08:18 AM
 -- Server version: 26.7.0
 -- PHP Version: 8.3.35
 
@@ -31,11 +31,18 @@ CREATE TABLE `tb_commit` (
   `id_commit` int NOT NULL,
   `id_member` int NOT NULL,
   `id_eva` int NOT NULL,
-  `status_commit` int NOT NULL,
-  `level_commit` int NOT NULL,
-  `detail_commit` int DEFAULT NULL,
-  `signature` int DEFAULT NULL
+  `status_commit` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `level_commit` varchar(100) NOT NULL,
+  `detail_commit` text,
+  `signature` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_commit`
+--
+
+INSERT INTO `tb_commit` (`id_commit`, `id_member`, `id_eva`, `status_commit`, `level_commit`, `detail_commit`, `signature`) VALUES
+(1, 2, 1, 'y', 'ประธาน', 'ไมีมี', '1792224997887.pdf');
 
 -- --------------------------------------------------------
 
@@ -49,6 +56,13 @@ CREATE TABLE `tb_doc` (
   `day_doc` date NOT NULL,
   `file` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_doc`
+--
+
+INSERT INTO `tb_doc` (`id_doc`, `name_doc`, `day_doc`, `file`) VALUES
+(1, 'test', '2026-10-04', NULL);
 
 -- --------------------------------------------------------
 
@@ -95,16 +109,16 @@ CREATE TABLE `tb_evadetail` (
 --
 
 INSERT INTO `tb_evadetail` (`id_detail`, `id_eva`, `id_indicate`, `status_eva`, `detail_eva`, `score_member`, `score_commit`, `file_eva`) VALUES
-(1, 1, 1, 1, 'asdfasdf', 2, NULL, '1792215463455g6fj6mdxo2u.jpg'),
-(2, 1, 2, 1, 'adsfads', 1, NULL, '17922154634555qj4ofp2mj4.jpg'),
-(3, 1, 1, 1, 'testa', 3, NULL, '1792215548437byg2js5adh.jpg'),
-(4, 1, 2, 1, 'testb', 4, NULL, '1792215548442fhqht1b37ja.jpg'),
-(5, 1, 1, 1, 'testa', 1, NULL, '1792215601208p7p3j9ul6c.jpg'),
-(6, 1, 2, 1, 'tesab', 3, NULL, '1792215601213aaerdlg739t.jpg'),
-(7, 1, 1, 1, 'test', 3, NULL, '1792215635352wq73slkjb8i.jpg'),
-(8, 1, 2, 1, 'adfasd', 1, NULL, '1792215635354c0pw6zst7yo.jpg'),
-(9, 1, 1, 1, 'testa', 3, NULL, '1792215668409msyjh7dwdfp.jpg'),
-(10, 1, 2, 1, 'testa', 2, NULL, '17922156684102tr0dye3ie2.jpg');
+(1, 1, 1, 2, 'asdfasdf', 2, NULL, '1792215463455g6fj6mdxo2u.jpg'),
+(2, 1, 2, 2, 'adsfads', 1, NULL, '17922154634555qj4ofp2mj4.jpg'),
+(3, 1, 1, 2, 'testa', 3, NULL, '1792215548437byg2js5adh.jpg'),
+(4, 1, 2, 2, 'testb', 4, NULL, '1792215548442fhqht1b37ja.jpg'),
+(5, 1, 1, 2, 'testa', 1, NULL, '1792215601208p7p3j9ul6c.jpg'),
+(6, 1, 2, 2, 'tesab', 3, NULL, '1792215601213aaerdlg739t.jpg'),
+(7, 1, 1, 2, 'test', 3, NULL, '1792215635352wq73slkjb8i.jpg'),
+(8, 1, 2, 2, 'adfasd', 1, NULL, '1792215635354c0pw6zst7yo.jpg'),
+(9, 1, 1, 2, 'testa', 3, NULL, '1792215668409msyjh7dwdfp.jpg'),
+(10, 1, 2, 2, 'testa', 2, NULL, '17922156684102tr0dye3ie2.jpg');
 
 -- --------------------------------------------------------
 
@@ -151,7 +165,8 @@ CREATE TABLE `tb_member` (
 --
 
 INSERT INTO `tb_member` (`id_member`, `fname`, `lname`, `username`, `password`, `email`, `role`, `pic_user`) VALUES
-(1, 'supimon', 'supimon', 'supimon', '$2b$10$rO66Drm.m8M3jBHLsFGcM.bRidE6IOyD/q8VuGk3Vpu0qW8a4Ewq6', 'supimon@gmail.com', 'ผู้รับการประเมินผล', '1792207143687.jpg');
+(1, 'supimon', 'supimon', 'supimon', '$2b$10$rO66Drm.m8M3jBHLsFGcM.bRidE6IOyD/q8VuGk3Vpu0qW8a4Ewq6', 'supimon@gmail.com', 'ผู้รับการประเมินผล', '1792207143687.jpg'),
+(2, 'commituser', 'commituser', 'commituser', '$2b$10$QuUra/fy8TqaMIKhm9BVTuRMDBLHKD2y4fz46rdErw.7KhAXuDj7C', 'commituser@gmail.com', 'กรรมการประเมิน', '1792220530469.jpg');
 
 -- --------------------------------------------------------
 
@@ -253,13 +268,13 @@ ALTER TABLE `tb_topic`
 -- AUTO_INCREMENT for table `tb_commit`
 --
 ALTER TABLE `tb_commit`
-  MODIFY `id_commit` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_commit` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_doc`
 --
 ALTER TABLE `tb_doc`
-  MODIFY `id_doc` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_doc` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_eva`
@@ -283,7 +298,7 @@ ALTER TABLE `tb_indicate`
 -- AUTO_INCREMENT for table `tb_member`
 --
 ALTER TABLE `tb_member`
-  MODIFY `id_member` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_member` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_system`
