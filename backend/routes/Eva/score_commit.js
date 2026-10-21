@@ -25,7 +25,7 @@ router.get('/score',verifyToken,requireRole('ผู้รับการปร�
         const scores = {}
         rows.map(row=>{
             if(!scores[row.indicates]){
-                [row.indicates] ={
+                scores[row.indicates] ={
                     a:null,
                     b:null,
                     c:null,
