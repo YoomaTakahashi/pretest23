@@ -24,16 +24,21 @@ router.get('/score',verifyToken,requireRole('ผู้รับการปร�
         const [rows] = await db.query(`select * from tb_indicate i,tb_evadetail d where d.id_indicate and c.id_eva=e.id_eva and d.id_indicate=i.id_indicate and status_eva in (2,3,4) and id_eva=?`,[id_eva])
         const scores = {}
         rows.map(row=>{
+<<<<<<< HEAD
             if(!scores[row.indicates]){
                 scores[row.indicates] ={
+=======
+            if(!scores[row.id_indicate]){
+                [row.indicates] ={
+>>>>>>> 44908340838118b88502f6c5b797234018191282
                     a:null,
                     b:null,
                     c:null,
                 }
             }
-            if(row.status_eva === 2)scores[row.id_indicate].a =row.score_commit*row.point_indicate
-            if(row.status_eva === 3)scores[row.id_indicate].b =row.score_commit*row.point_indicate
-            if(row.status_eva === 4)scores[row.id_indicate].c =row.score_commit*row.point_indicate
+            if(status === 2)scores[id].a =score*point
+            if(status === 3)scores[id].b =score*point
+            if(status === 4)scores[id].c =score*point
         })
         res.json({scores})
     } catch (error) {
