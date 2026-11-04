@@ -3,39 +3,37 @@
         <v-row>
             <v-col cols="12">
                 <v-alert v-if="user.status_eva === 1">ผู้รับการประเมินยังไม่ได้ประเมินตนเอง</v-alert>
-                <v-form v-if="user.status_commit === 'n'" @submit.prevent="saveScore">
+                <v-form v-else-if="user.status_commit === 'n'" @submit.prevent="saveScore">
                     <h1 class="font-weight-bold">แบบประเมินตนเอง</h1>
-                    <v-card class="pa-5 py-4" :elevation="5" rounded >
-                        <p>ผู้ใช้ : {{ user.fname }} - {{ user.lname }} </p>
-                        <p>รอบการประเมินที่ : {{ user.round_sys }} ปี : {{ user.year_sys }}</p>
+                    <v-card :elevation="5" rounded class="pa-4 py-4">
+                        <p>ผู้ใช่งาน : {{ user.fname }} {{ user.lname }}</p>
+                        <p>รอบการประเมินที่ : {{ user.round_sys }} ปี {{ user.year_sys }}</p>
                     </v-card>
                     <v-row v-for="(topic,t) in topics" :key="topic.id_topic">
                         <v-col cols="12">
                             <h1 class="font-weight-bold">{{ t+1 }}.{{ topic.name_topic }}</h1>
-                            <v-card class="pa-5 py-4" :elevation="5" rounded>
+                            <v-card elevation="5" rounded class="pa-5 py-4">
                                 <v-row v-for="(indicate,i) in topic.indicates" :key="indicate.id_indicate">
                                     <v-col cols="12">
                                         {{ t+1 }}.{{ i+1 }} {{ indicate.name_indicate }} รายละเอียดตัวชี้วัด : {{ indicate.detail_indicate }} น้ำหนักคะแนน : {{ indicate.point_indicate }} คะแนนเต็ม : {{ indicate.point_indicate*4 }}
-                                        <p class="mt-2">รายละเอียด {{ indicate.detail_eva || '-' }}</p>
-                                        <p class="mt-2">file <v-btn v-if="indicate.file_eva" size="smail" @click="viweFile(indicate.file_eva)" color="blue">เปิดดู</v-btn><span v-else>-</span> </p>
-                                        <v-select v-if="indicate.check_indicate === 'y'" label="ใส่คะแนน1-4" v-model="indicate.score" variant="solo-filled" :items="[1,2,3,4]" ></v-select>
-                                        <v-text-field v-else-if="indicate.check_indicate === 'n'" label="ใส่คะแนน1-4" v-model="indicate.score" variant="solo-filled" type="number" min="0" @input="indicate.score > 4 ? indicate.score = 4 :null" ></v-text-field>
+                                        <p class="mt-2">รายละเอียด: {{ indicate.detail_eva || '-' }}</p>
+                                        <p class="mt-2">File: <v-btn v-if="indicate.file_eva" size="smail" @click="viweFile(indicate.file_eva)"></v-btn> </p>
+                                        <v-select v-if="indicate.check_indicate === 'y'" label="ใส่คะแนน1-4" :items="[1,2,3,4]" variant="solo-filled" v-model="indicate.score" ></v-select>
+                                        <v-text-field v-else-if="indicate.check_indicate === 'n'" label="ใส่คะแนน1-4" :items="[1,2,3,4]" variant="solo-filled" v-model="indicate.score" @input="indicate.score > 4 ? indicate.score = 4 : null" type="number" min="0"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-card>
                         </v-col>
                     </v-row>
-                    <div class="mt-4">
-                        <v-card class="pa-2">
-                            <label for="">ข้อเสนอแนะ</label>
-                            <v-textarea label="(ถ้ามี)" v-model="detail_commit" rows="2"></v-textarea>
-                        </v-card>
+                    <div class="pa-2">
+                        <label for="">ข้อเสนอแนะ</label>
+                        <v-textarea label="(ถ้ามี)" v-model="detail_commit" rows="2" ></v-textarea>
                     </div>
-                    <div class="mt-4 text-center">
-                        <v-btn color="blue" type="submit">บันทึกคะแนน</v-btn>
+                    <div class="mt-3 text-center">
+                        <v-btn color="blue " type="submit">บันทึกคะแนน</v-btn>
                     </div>
                 </v-form>
-                <v-alert type="success" variant="tonal" color="green" v-else-if="user.status_commit === 'y'">ประเมินสำเร็จ</v-alert>
+                <v-alert type="success" variant="tonal" color="success" v-else-if="user.status_commit === 'y'">ประเมินสำเร็จ</v-alert>
                 <v-alert type="error" variant="tonal" color="error" v-else>ไม่มีแบบประเมิน</v-alert>
             </v-col>
         </v-row>

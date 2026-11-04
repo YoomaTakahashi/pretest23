@@ -2,7 +2,7 @@
     <v-container fluid class="py-10">
                 <v-card>
                     <v-sheet class="pa-4" color="">
-                        <h1 class="text-h5 font-weight-bold">ตรวจสอบผลและยืนยันผล</h1>
+                        <h1 class="text-h5 font-weight-bold">ตรวจสอบผลการประเมิน</h1>
                     </v-sheet>
                     <v-card-text>
                         <v-table>
@@ -13,8 +13,8 @@
                                     <th class="text-center border">นามสกุล</th>
                                     <th class="text-center border">วันที่ออกแบบประเมิน</th>
                                     <th class="text-center border">รอบการประเมิน</th>
-                                    <th class="text-center border">ผลการประเมิน</th>
-                                    <th class="text-center border">ยืนยันผลประเมิน</th>
+                                    <th class="text-center border">ตรวจสอบ</th>
+                                    <th class="text-center border">ยืนยันผลการประเมิน</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -23,11 +23,11 @@
                                     <td class="text-center border">{{ items.fname }}</td>
                                     <td class="text-center border">{{ items.lname }}</td>
                                     <td class="text-center border">{{ formatDate(items.day_eva) }}</td>
-                                    <td class="text-center border">รอบการประเมินที่ {{ items.round_sys }} ปี {{ items.year_sys }}</td>
+                                    <td class="text-center border">รอบการประเมินที่ {{ items.round_sys }} ปี {{ year_sys }}</td>
                                     <td class="text-center border"><v-btn color="blue" class="text-white" size="small" @click="check(items.id_eva)">ตรวจสอบ</v-btn></td>
                                     <td class="text-center border">
-                                        <v-btn v-if="items.signature" color="success" class="text-white" size="small" @click="go(items.id_eva)">ยืนยันผล</v-btn>
-                                        <v-btn v-else color="blue" class="text-white" size="small" @click="go(items.id_eva)">ยืนยันผลแล้ว</v-btn>
+                                        <v-btn v-if="items.signature" color="success" class="text-white" size="small" @click="go(items.id_eva)">ยืนยันผลแล้ว</v-btn>
+                                        <v-btn v-else color="info" class="text-white" size="small" @click="go(items.id_eva)">ยืนยันผล</v-btn>
                                     </td>
                                 </tr>
                                 <tr v-if="result.length === 0">
@@ -52,8 +52,8 @@ const fetch = async () => {
     try{
         const res = await axios.get(`${commit}/check`,{headers:{Authorization:`Bearer ${token}`}})
         result.value = res.data
-    }catch(err){
-        console.error("Error Fetching",err)
+    }catch(error){
+        console.error("Error Fetching",error)
     }
 }
 
@@ -69,11 +69,11 @@ const formatDate = (dateStr:string)=>{
 
 }
 
-const check = (id_eva:number) => {
-    navigateTo({path:`/Committee/Score_commit${id_eva}`})
-}
 const go = (id_eva:number) => {
-    navigateTo({path:`/Committee/Signature${id_eva}`})
+    navigateTo({path:`/Committee/Signature/${id_eva}`})
+}
+const check = (id_eva:number) => {
+    navigateTo({path:`/Committee/Score_commit/${id_eva}`})
 }
 
 onMounted(fetch)
