@@ -51,8 +51,8 @@ const fetch = async () => {
     try{
         const res = await axios.get(`${commit}/show_eva`,{headers:{Authorization:`Bearer ${token}`}})
         result.value = res.data
-    }catch(err){
-        console.error("Error Fetching",err)
+    }catch(error){
+        console.error("Error Fetching",error)
     }
 }
 
