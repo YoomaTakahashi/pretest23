@@ -118,7 +118,6 @@ const saveScore = async()=>{
 }
 
 
-
 </script>
 
 <style scoped>

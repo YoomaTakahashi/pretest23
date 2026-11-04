@@ -56,7 +56,7 @@ const token = import.meta.client ? localStorage.getItem('token'):null
 const fetch = async()=>{
     try {
         const res = await axios.get(`${api}/docnoe/show`,{headers:{Authorization:`Bearer ${token}`}})
-        dataResult.value = res.data
+        result.value = res.data
     } catch (error) {
         console.error("Error get",error)
     }
@@ -65,18 +65,7 @@ const fetch = async()=>{
 
 
 
-const result = computed(()=>{
-
-    if(!search.value)return dataResult.value
-    const s = search.value.toLowerCase()
-
-    return dataResult.value.filter((items:any)=>{
-        return(
-            items.name_doc.toLowerCase().includes(s)
-        )
-    })
-
-})
+const result = ref([])
 
 const formatDate = (dateStr:string)=>{
     if(!dateStr)return '-'

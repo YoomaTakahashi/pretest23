@@ -61,6 +61,8 @@ app.use('/api/Staff/status',status)
 
 //eva
 
+const table = require('./routes/Eva/table')
+app.use('/api/Eva/table',table)
 
 const selfeva = require('./routes/Eva/selfeva')
 app.use('/api/Eva/selfeva',selfeva)
@@ -74,10 +76,17 @@ app.use('/api/Eva/score_commit',score_commit)
 const edit_eva = require('./routes/Eva/edit_eva')
 app.use('/api/Eva/edit_eva',edit_eva)
 
-const table = require('./routes/Eva/table')
-app.use('/api/Eva/table',table)
+//คอมมิท
 
-//commit
+const show_eva = require('./routes/Commit/show_eva')
+app.use('/api/Commit/show_eva',show_eva)
+
+const save_score = require('./routes/Commit/save_score')
+app.use('/api/Commit/save_score',save_score)
+
+const score_member2 = require('./routes/Commit/score_member')
+app.use('/api/Commit/score_member',score_member2)
+
 
 const signature = require('./routes/Commit/signature')
 app.use('/api/Commit/signature',signature)
