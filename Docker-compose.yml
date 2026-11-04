@@ -3,7 +3,7 @@ services:
     build: ./frontend
     depends_on:
       - backend
-    container_name: Frontend_container
+    container_name: Frontend_Container
     ports: ["3000:3000"]
     command: npm run dev -- --host 0.0.0.0
     restart: always
@@ -13,7 +13,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     networks: ["app-networks"]
-
+  
   backend:
     build: ./backend
     depends_on:
@@ -29,9 +29,9 @@ services:
       DB_HOST: mysql
       DB_USER: root
       DB_PASSWORD: 1234
-      DB_DATABASE: "pretest23"
+      DB_DATABASE: "pretest29"
       JWT_SECRET: "Tee&Kate"
-      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_USEPOLLING: true
     networks: ["app-networks"]
 
   phpmyadmin:
@@ -46,7 +46,7 @@ services:
       PMA_USER: root
       PMA_PASSWORD: 1234
     networks: ["app-networks"]
-  
+
   mysql:
     image: mysql
     container_name: MYSQL_Container
@@ -56,14 +56,14 @@ services:
       - ./database:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 1234 
-      MYSQL_DATABASE: pretest23
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: pretest29
     networks: ["app-networks"]
 
 networks:
   app-networks:
     driver: bridge
-  
+
 volumes:
   frontend_node_modules:
   backend_node_modules:

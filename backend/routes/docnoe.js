@@ -1,14 +1,15 @@
 const express =require('express')
-const db =require('../db')
+const db = require('../db')
 const router = express.Router()
-const {verifyToken,requireRole} = require('../middleware/authmiddleware')
 
-router.get('/',async (req,res) => {
+router.get('/show',async(req,res)=>{
     try {
-        const [rows] = await db.query(`select * from tb_doc`)
+        const [rows] = await db.query(`select * from tb_doc where id_doc`)
         res.json(rows)
     } catch (error) {
-        console.error('error get ',error)
+        console.error('Error get ',error)
+        res.status(500).json({message:"Error get"})
     }
 })
+
 module.exports = router
