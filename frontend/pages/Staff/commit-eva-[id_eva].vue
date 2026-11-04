@@ -44,7 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(items,index) in result" :key="items.id_commit">
+                                <tr v-for="(items,index) in List" :key="items.id_commit">
                                     <td class="border text-center">{{ index+1 }}</td>
                                     <td class="border text-center">{{ nameOf(items.id_member) }}</td>
                                     <td class="border text-center">{{ items.role }}</td>

@@ -25,12 +25,17 @@ router.get('/scores',verifyToken,requireRole('ผู้รับการปร�
         const [rows] = await db.query(`select * from tb_indicate i,tb_evadetail d where d.id_indicate=i.id_indicate and status_eva in (2,3,4) order by d.id_eva=?`,[id_eva])
         const scores = {}
         rows.map(row=>{
+<<<<<<< HEAD
             const id = row.id_indicate
             const status = row.status_eva
             const point = row.point_indicate
             const score = row.score_commit
             if(!scores[id]){
                 scores[id]={
+=======
+            if(!scores[row.indicates]){
+                scores[row.indicates] ={
+>>>>>>> 1bc3bab91598d83502a9f5d3761235445d644425
                     a:null,
                     b:null,
                     c:null,
